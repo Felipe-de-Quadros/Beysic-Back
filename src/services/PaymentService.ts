@@ -20,7 +20,7 @@ export class PaymentService {
       amount,
       paymentMethod: paymentMethod as 'CREDIT_CARD' | 'PIX' | 'PAYPAL',
       status: 'PENDING',
-      transactionID: `txt_${Math.random().toString(16).substr(2, 9)}`,
+      transactionID: this.payments.length + 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
