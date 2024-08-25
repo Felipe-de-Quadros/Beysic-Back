@@ -5,6 +5,7 @@ const typeorm_1 = require("typeorm");
 const Payment_1 = require("./models/Payment");
 const Order_1 = require("./models/Order");
 const Ticket_1 = require("./models/Ticket");
+const User_1 = require("./models/User");
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
     host: "localhost",
@@ -12,7 +13,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     username: "tales",
     password: "Masterkey",
     database: "beysic",
-    entities: [Ticket_1.Ticket, Order_1.Order, Payment_1.Payment],
+    entities: [Ticket_1.Ticket, Order_1.Order, Payment_1.Payment, User_1.User],
     migrations: ["src/migrations/*.ts"],
     synchronize: false,
     logging: true

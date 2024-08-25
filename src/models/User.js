@@ -9,53 +9,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Order = void 0;
+exports.User = void 0;
 const typeorm_1 = require("typeorm");
-let Order = class Order {
+let User = class User {
     constructor() {
         this.id = 0;
-        this.ticketID = 0;
-        this.userID = 0;
-        this.status = 'PENDING';
-        this.quantity = 0;
-        this.totalAmount = 0.0;
+        this.name = '';
+        this.email = '';
+        this.password = '';
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }
 };
-exports.Order = Order;
+exports.User = User;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Order.prototype, "id", void 0);
+], User.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Order.prototype, "ticketID", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Order.prototype, "userID", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'enum', enum: ['PENDING', 'PAID', 'CANCELLED'], default: 'PENDING' }),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100 }),
     __metadata("design:type", String)
-], Order.prototype, "status", void 0);
+], User.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int' }),
-    __metadata("design:type", Number)
-], Order.prototype, "quantity", void 0);
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100, unique: true }),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'decimal' }),
-    __metadata("design:type", Number)
-], Order.prototype, "totalAmount", void 0);
+    (0, typeorm_1.Column)({ type: 'varchar', length: 255 }),
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20, nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "phoneNumber", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], Order.prototype, "createdAt", void 0);
+], User.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' }),
     __metadata("design:type", Date)
-], Order.prototype, "updatedAt", void 0);
-exports.Order = Order = __decorate([
-    (0, typeorm_1.Entity)('orders')
-], Order);
+], User.prototype, "updatedAt", void 0);
+exports.User = User = __decorate([
+    (0, typeorm_1.Entity)('users') // Nome da tabela no banco de dados
+], User);

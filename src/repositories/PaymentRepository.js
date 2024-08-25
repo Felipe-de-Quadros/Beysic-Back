@@ -12,35 +12,35 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepository = void 0;
+exports.PaymentRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
-const User_1 = require("../models/User");
-let UserRepository = class UserRepository {
-    constructor(userRepository) {
-        this.userRepository = userRepository;
+const Payment_1 = require("../models/Payment");
+let PaymentRepository = class PaymentRepository {
+    constructor(paymentRepository) {
+        this.paymentRepository = paymentRepository;
     }
     getAll() {
-        return this.userRepository.find();
+        return this.paymentRepository.find();
     }
     getById(id) {
-        return this.userRepository.findOneBy({ id });
+        return this.paymentRepository.findOneBy({ id });
     }
-    create(userData) {
-        const newUser = this.userRepository.create(userData);
-        return this.userRepository.save(newUser);
+    create(paymentData) {
+        const newPayment = this.paymentRepository.create(paymentData);
+        return this.paymentRepository.save(newPayment);
     }
-    update(id, userData) {
-        return this.userRepository.save(Object.assign({ id }, userData));
+    update(id, paymentData) {
+        return this.paymentRepository.save(Object.assign({ id }, paymentData));
     }
     delete(id) {
-        return this.userRepository.delete(id);
+        return this.paymentRepository.delete(id);
     }
 };
-exports.UserRepository = UserRepository;
-exports.UserRepository = UserRepository = __decorate([
+exports.PaymentRepository = PaymentRepository;
+exports.PaymentRepository = PaymentRepository = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_2.InjectRepository)(User_1.User)),
+    __param(0, (0, typeorm_2.InjectRepository)(Payment_1.Payment)),
     __metadata("design:paramtypes", [typeorm_1.Repository])
-], UserRepository);
+], PaymentRepository);

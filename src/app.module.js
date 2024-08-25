@@ -28,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
                 password: 'Masterkey',
                 database: 'beysic',
                 entities: [Ticket_1.Ticket, Order_1.Order, Payment_1.Payment],
-                synchronize: true, // EM PROD BOTAR COMO FALSO
+                synchronize: false, // quando usar migrations, botar pra FALSE
             }),
             typeorm_1.TypeOrmModule.forFeature([Ticket_1.Ticket, Order_1.Order, Payment_1.Payment]),
             TicketRoutes_1.TicketRoutesModule,

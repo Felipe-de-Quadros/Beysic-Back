@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TicketRoutesModule = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
-const TicketController_1 = require("../controllers/TicketController");
-const TicketService_1 = require("../services/TicketService");
-const TicketRepository_1 = require("../repositories/TicketRepository");
+const TicketController_1 = require("../../controllers/TicketController");
+const TicketService_1 = require("../../services/TicketService");
+const TicketRepository_1 = require("./TicketRepository");
 let TicketRoutesModule = class TicketRoutesModule {
 };
 exports.TicketRoutesModule = TicketRoutesModule;

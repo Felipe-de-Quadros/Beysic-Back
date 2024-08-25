@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
-import { TicketRoutesModule } from './routes/TicketRoutes';
-import { PaymentRoutesModule } from './routes/PaymentRoutes';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Payment } from './models/Payment';
-import { Order } from './models/Order';
 import { Ticket } from './models/Ticket';
+import { Order } from './models/Order';
+import { Payment } from './models/Payment';
+import { User } from './models/User';
+import { TicketRepository } from './repositories/ticket/TicketRepository';
+import { OrderRepository } from './repositories/OrderRepository';
+import { PaymentRepository } from './repositories/PaymentRepository';
+import { TicketService } from './services/TicketService';
+import { OrderService } from './services/OrderService';
+import { PaymentService } from './services/PaymentService';
+import { TicketController } from './controllers/TicketController';
+import { OrderController } from './controllers/OrderController';
+import { PaymentController } from './controllers/PaymentController';
 
 @Module({
   imports: [
@@ -15,12 +23,23 @@ import { Ticket } from './models/Ticket';
       username: 'tales',
       password: 'Masterkey',
       database: 'beysic',
-      entities: [Ticket,Order,Payment],
-      synchronize: false, // quando usar migrations, botar pra FALSE
+      entities: [Ticket, Order, Payment, User],
+      synchronize: false,
     }),
-    TypeOrmModule.forFeature([Ticket, Order, Payment]),
-    TicketRoutesModule,
-    PaymentRoutesModule
+    TypeOrmModule.forFeature([Ticket, Order, Payment, User]),
+  ],
+  controllers: [
+    TicketController,
+    OrderController,
+    PaymentController
+  ],
+  providers: [
+    TicketRepository,
+    OrderRepository,
+    PaymentRepository,
+    TicketService,
+    OrderService,
+    PaymentService
   ],
 })
 export class AppModule {}

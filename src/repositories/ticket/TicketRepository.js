@@ -12,35 +12,35 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepository = void 0;
+exports.TicketRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
-const User_1 = require("../models/User");
-let UserRepository = class UserRepository {
-    constructor(userRepository) {
-        this.userRepository = userRepository;
+const Ticket_1 = require("../../models/Ticket");
+let TicketRepository = class TicketRepository {
+    constructor(ticketRepository) {
+        this.ticketRepository = ticketRepository;
     }
     getAll() {
-        return this.userRepository.find();
+        return this.ticketRepository.find();
     }
     getById(id) {
-        return this.userRepository.findOneBy({ id });
+        return this.ticketRepository.findOneBy({ id });
     }
-    create(userData) {
-        const newUser = this.userRepository.create(userData);
-        return this.userRepository.save(newUser);
+    create(ticketData) {
+        const newTicket = this.ticketRepository.create(ticketData);
+        return this.ticketRepository.save(newTicket);
     }
-    update(id, userData) {
-        return this.userRepository.save(Object.assign({ id }, userData));
+    update(id, ticketData) {
+        return this.ticketRepository.save(Object.assign({ id }, ticketData));
     }
     delete(id) {
-        return this.userRepository.delete(id);
+        return this.ticketRepository.delete(id);
     }
 };
-exports.UserRepository = UserRepository;
-exports.UserRepository = UserRepository = __decorate([
+exports.TicketRepository = TicketRepository;
+exports.TicketRepository = TicketRepository = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_2.InjectRepository)(User_1.User)),
+    __param(0, (0, typeorm_2.InjectRepository)(Ticket_1.Ticket)),
     __metadata("design:paramtypes", [typeorm_1.Repository])
-], UserRepository);
+], TicketRepository);
