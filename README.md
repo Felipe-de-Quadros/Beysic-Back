@@ -26,6 +26,6 @@ ter instalado o mysql:
    npm install
    
    npm run migration:run
-    ```
+   ```
 
 **Se der merda me chama no whats**
