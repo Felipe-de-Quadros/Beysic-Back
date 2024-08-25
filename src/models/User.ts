@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-@Entity('users') // Nome da tabela no banco de dados
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number = 0;
@@ -13,9 +13,6 @@ export class User {
 
   @Column({ type: 'varchar', length: 255 })
   password: string = '';
-
-  @Column({ type: 'varchar', length: 20, nullable: true })
-  phoneNumber?: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date = new Date();

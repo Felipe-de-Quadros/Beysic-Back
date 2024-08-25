@@ -13,6 +13,9 @@ import { PaymentService } from './services/PaymentService';
 import { TicketController } from './controllers/TicketController';
 import { OrderController } from './controllers/OrderController';
 import { PaymentController } from './controllers/PaymentController';
+import { UserController } from './controllers/UserController';
+import { UserService } from './services/UserService';
+import { UserRepository } from './repositories/UserRepository';
 
 @Module({
   imports: [
@@ -31,15 +34,18 @@ import { PaymentController } from './controllers/PaymentController';
   controllers: [
     TicketController,
     OrderController,
-    PaymentController
+    PaymentController,
+    UserController
   ],
   providers: [
     TicketRepository,
     OrderRepository,
     PaymentRepository,
+    UserRepository,
     TicketService,
     OrderService,
-    PaymentService
+    PaymentService,
+    UserService
   ],
 })
 export class AppModule {}
