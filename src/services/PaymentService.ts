@@ -1,39 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { Payment } from '../models/Payment';
 import { OrderRepository } from '../repositories/OrderRepository';
+import { PaymentRepository } from '../repositories/PaymentRepository';
+import { Payment } from '../models/Payment';
 
 @Injectable()
 export class PaymentService {
-  private payments: Payment[] = [];
+  constructor(
+    private readonly orderRepository: OrderRepository,
+    private readonly paymentRepository: PaymentRepository,
+  ) {}
 
-  createPayment(orderID: number, userID: number, paymentMethod: string, amount: number) {
-    const order = OrderRepository.findByID(orderID);
+  async createPayment(orderID: number, userID: number, paymentMethod: string, amount: number) {
+    const order = await this.orderRepository.getById(orderID);
 
     if (!order || order.status !== 'PENDING') {
-      throw new Error("Order not found or already paid");
+      throw new Error('Order not found or already paid');
     }
 
-    const payment:Payment = {
-      id:this.payments.length + 1,
+    const payment: Partial<Payment> = {
       orderID,
       userID,
       amount,
       paymentMethod: paymentMethod as 'CREDIT_CARD' | 'PIX' | 'PAYPAL',
       status: 'PENDING',
-      transactionID: this.payments.length + 1,
+      transactionID: this.generateTransactionID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    this.payments.push(payment);
-    return payment;
+
+    const newPayment = await this.paymentRepository.create(payment);
+
+    const isPaymentSuccessful = this.processPayment(newPayment);
+
+    if (isPaymentSuccessful) {
+      await this.paymentRepository.update(newPayment.id, { status: 'COMPLETED' });
+      return newPayment;
+    } else {
+      await this.paymentRepository.update(newPayment.id, { status: 'FAILED' });
+      throw new Error('Payment processing failed');
+    }
   }
 
-  private processPayment(payment: Payment){
-    //logica de processo de pagamento, estamos simulando que 20% dos pagamentos darão errado
+  private processPayment(payment: Payment) {
     return Math.random() > 0.2;
   }
 
-  public getPaymentStatus(paymentID: number){
-    return this.payments.find(payment => payment.id === paymentID)
+  public async getPaymentStatus(paymentID: number) {
+    return this.paymentRepository.getById(paymentID);
+  }
+
+  private generateTransactionID() {
+    return Math.floor(Math.random() * 1000000);
   }
 }

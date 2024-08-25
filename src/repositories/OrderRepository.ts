@@ -1,37 +1,33 @@
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from '../models/Order';
 
-export class OrderRepository{
-  private static orders: Order[] = [];
+@Injectable()
+export class OrderRepository {
+  constructor(
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
+  ) {}
 
-  public static create(orderData: Partial<Order>){
-    const newOrder: Order = {
-      id: this.orders.length + 1,
-      status: 'PENDING',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      ...orderData } as Order;
-
-    this.orders.push(newOrder);
-    return newOrder;
+  public getAll() {
+    return this.orderRepository.find();
   }
 
-  public static update(orderId: number, updateData: Partial<Order>){
-    const orderIndex = this.orders.findIndex(order => order.id === orderId);
-    if (orderIndex > -1){
-      this.orders[orderIndex] = {
-        ...this.orders[orderIndex],
-        ...updateData,
-        updatedAt: new Date(),
-      }
-      return this.orders[orderIndex];
-    }
-    return null
+  public getById(id: number) {
+    return this.orderRepository.findOneBy({ id });
   }
 
-  public static findByID(orderId: number){
-    return this.orders.find(order => order.id === orderId);
+  public create(orderData: Partial<Order>) {
+    const newOrder = this.orderRepository.create(orderData);
+    return this.orderRepository.save(newOrder);
   }
 
+  public update(id: number, orderData: Partial<Order>) {
+    return this.orderRepository.save({ id, ...orderData });
+  }
 
+  public delete(id: number) {
+    return this.orderRepository.delete(id);
+  }
 }
-

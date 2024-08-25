@@ -1,54 +1,33 @@
-// const {EntityRepository, Repository} = require('typeorm')
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Ticket } from '../models/Ticket';
 
-// @EntityRepository
-//todo adicionar typeORM e entities
+@Injectable()
 export class TicketRepository {
-  private tickets = [
-    {
-      id: 1,
-      eventName: "Computaria",
-      categories: ["pista", "camarote", "vip"],
-      place: "Veld",
-      city: "Erechim",
-      state: "RS"
-    },
-    {
-      id: 2,
-      eventName: "Patologicos",
-      categories: ["pista", "camarote", "vip"],
-      place: "Bocato",
-      city: "Erechim",
-      state: "RS"
-    }
-  ];
+  constructor(
+    @InjectRepository(Ticket)
+    private readonly ticketRepository: Repository<Ticket>,
+  ) {}
 
-  public getAll(){
-    return this.tickets;
+  public getAll() {
+    return this.ticketRepository.find();
   }
+
   public getById(id: number) {
-    return this.tickets.find(ticket => ticket.id === id);
+    return this.ticketRepository.findOneBy({ id });
   }
 
-  public create(ticketData: any) {
-    const newTicket = { id: this.tickets.length + 1, ...ticketData };
-    this.tickets.push(newTicket);
-    return newTicket;
+  public create(ticketData: Partial<Ticket>) {
+    const newTicket = this.ticketRepository.create(ticketData);
+    return this.ticketRepository.save(newTicket);
   }
 
-  public update(id: number, ticketData: any) {
-    const ticketIndex = this.tickets.findIndex(ticket => ticket.id === id);
-    if (ticketIndex > -1) {
-      this.tickets[ticketIndex] = { id, ...ticketData };
-      return this.tickets[ticketIndex];
-    }
-    return null;
+  public update(id: number, ticketData: Partial<Ticket>) {
+    return this.ticketRepository.save({ id, ...ticketData });
   }
 
   public delete(id: number) {
-    const ticketIndex = this.tickets.findIndex(ticket => ticket.id === id);
-    if (ticketIndex > -1) {
-      return this.tickets.splice(ticketIndex, 1);
-    }
-    return null;
+    return this.ticketRepository.delete(id);
   }
 }
