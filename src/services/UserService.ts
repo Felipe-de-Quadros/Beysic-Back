@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories/UserRepository';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -14,8 +15,10 @@ getUserById(id: number) {
   return this.UserRepository.getById(id);
 }
 
-createUser(UserData: any) {
-  return this.UserRepository.create(UserData);
+async createUser(UserData: any) {
+    const hashedPw = await this.encryptPassword(UserData.password);
+    const user = {...UserData, password: hashedPw};
+  return this.UserRepository.create(user);
 }
 
 updateUser(id: number, UserData: any) {
@@ -24,5 +27,9 @@ updateUser(id: number, UserData: any) {
 
 deleteUser(id: number) {
   return this.UserRepository.delete(id);
+}
+
+private encryptPassword(pw: string): Promise<string> {
+    return bcrypt.hash(pw, 10)
 }
 }
