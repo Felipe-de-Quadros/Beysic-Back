@@ -3,26 +3,26 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('ticket')
 export class Ticket {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number = 0;
 
   @Column({type: 'varchar', length: 255})
-  eventName: string;
+  eventName: string = '';
 
   @Column({ type: 'simple-array' })
-  categories: string[];
+  categories: string[] = [];
 
   @Column({type: 'varchar', length: 255})
-  place: string;
+  place: string = '';
 
   @Column({type: 'varchar', length: 255})
-  city: string;
+  city: string = '';
 
   @Column({type: 'varchar', length: 2})
-  state: string;
+  state: string = '';
 
   @Column({type: 'decimal' })
-  price: number;
+  price: number = 0.0;
 
   @Column({type: 'int' })
-  availableQuantity: number;
+  availableQuantity: number = 0;
 }

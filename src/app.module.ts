@@ -16,7 +16,7 @@ import { Ticket } from './models/Ticket';
       password: 'Masterkey',
       database: 'beysic',
       entities: [Ticket,Order,Payment],
-      synchronize: true, // EM PROD BOTAR COMO FALSO
+      synchronize: false, // quando usar migrations, botar pra FALSE
     }),
     TypeOrmModule.forFeature([Ticket, Order, Payment]),
     TicketRoutesModule,

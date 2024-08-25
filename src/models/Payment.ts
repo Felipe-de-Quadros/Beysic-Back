@@ -3,29 +3,29 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('payment')
 export class Payment {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number = 0;
 
   @Column()
-  orderID: number;
+  orderID: number = 0;
 
   @Column()
-  userID:number;
+  userID:number = 0;
 
   @Column("decimal")
-  amount: number;
+  amount: number = 0.0;
 
   @Column({ type: 'varchar', length: 255 })
-  paymentMethod: 'CREDIT_CARD' | 'PIX' | 'PAYPAL';
+  paymentMethod: 'CREDIT_CARD' | 'PIX' | 'PAYPAL' = 'PIX';
 
   @Column({ type: 'varchar', length: 255 })
-  status: 'PENDING' | 'COMPLETED' | 'FAILED';
+  status: 'PENDING' | 'COMPLETED' | 'FAILED' = 'PENDING';
 
   @Column({type: 'varchar', length: 255 })
-  transactionID: number;
+  transactionID: number = 0;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt: Date = new Date();
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  updatedAt: Date = new Date();
 }

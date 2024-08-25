@@ -3,26 +3,26 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('orders')
 export class Order {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number = 0;
 
   @Column()
-  ticketID: number;
+  ticketID: number = 0;
 
   @Column()
-  userID: number;
+  userID: number = 0;
 
-  @Column({type : 'varchar', length: 255})
-  status: 'PENDING' | 'PAID' | 'CANCELLED';
+  @Column({ type: 'enum', enum: ['PENDING', 'PAID', 'CANCELLED'], default: 'PENDING' })
+  status: 'PENDING' | 'PAID' | 'CANCELLED' = 'PENDING';
 
   @Column({ type: 'int' })
-  quantity: number;
+  quantity: number = 0;
 
   @Column({type: 'decimal' })
-  totalAmount: number;
+  totalAmount: number = 0.0;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt: Date = new Date();
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  updatedAt: Date = new Date();
 }

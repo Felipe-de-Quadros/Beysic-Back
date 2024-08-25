@@ -1,54 +1,33 @@
-// const {EntityRepository, Repository} = require('typeorm')
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../models/User';
 
-// @EntityRepository
-//todo adicionar typeORM e entities
+@Injectable()
 export class UserRepository {
-    private users = [
-      {
-        id: 1,
-        eventName: "Computaria",
-        categories: ["pista", "camarote", "vip"],
-        place: "Veld",
-        city: "Erechim",
-        state: "RS"
-      },
-      {
-        id: 2,
-        eventName: "Patologicos",
-        categories: ["pista", "camarote", "vip"],
-        place: "Bocato",
-        city: "Erechim",
-        state: "RS"
-      }
-    ];
-  
-    public getAll(){
-      return this.users;
-    }
-    public getById(id: number) {
-      return this.users.find(user => user.id === id);
-    }
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-    public create( userData: any) {
-      const newUser = { id: this.users.length + 1, ...userData };
-      this.users.push(newUser);
-      return newUser;
-    }
-  
-    public update(id: number, UserData: any) {
-      const userIndex = this.users.findIndex(user => user.id === id);
-      if  (userIndex > -1) {
-        this.users[userIndex] = { id, ...UserData };
-        return this.users[userIndex];
-      }
-      return null;
-    }
-  
-    public delete(id: number) {
-      const userIndex = this.users.findIndex(user => user.id === id);
-      if (userIndex > -1) {
-        return this.users.splice(userIndex, 1);
-      }
-      return null;
-    }
+  public getAll() {
+    return this.userRepository.find();
   }
+
+  public getById(id: number) {
+    return this.userRepository.findOneBy({ id });
+  }
+
+  public create(userData: Partial<User>) {
+    const newUser = this.userRepository.create(userData);
+    return this.userRepository.save(newUser);
+  }
+
+  public update(id: number, userData: Partial<User>) {
+    return this.userRepository.save({ id, ...userData });
+  }
+
+  public delete(id: number) {
+    return this.userRepository.delete(id);
+  }
+}

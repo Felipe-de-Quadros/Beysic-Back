@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
-import { UserController } from 'src/controllers/UserController';
-import { UserService } from 'src/services/UserService';
+import { UserController } from '../controllers/UserController';
+import { UserService } from '../services/UserService';
 
 @Module({
   imports: [
