@@ -1,9 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { TicketService } from '../services/TicketService';
+import { PaymentService } from '../services/PaymentService';
 
 @Controller("ticket")
 export class TicketController {
-  constructor(private readonly ticketService: TicketService) {
+  constructor(private readonly ticketService: TicketService,
+              private readonly paymentService: PaymentService) {
   }
 
   @Get()
@@ -29,5 +31,18 @@ export class TicketController {
   @Delete(':id')
   deleteTicket(@Param('id') id: number) {
     return this.ticketService.deleteTicket(id);
+  }
+
+
+  @Post('buy/:ticketId')
+  async buyTicket(
+    @Param('ticketId') ticketId: number,
+    @Body() body : {
+      userID:number,
+      paymentMethod: string,
+      amount: number
+    }){
+    const { userID, paymentMethod, amount} = body;
+    return this.paymentService.createPayment(ticketId, userID, paymentMethod, amount);
   }
 }

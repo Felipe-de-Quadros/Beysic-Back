@@ -30,4 +30,14 @@ export class TicketRepository {
   public delete(id: number) {
     return this.ticketRepository.delete(id);
   }
+
+  public async decrementQuantity(ticketId: number, quantity: number) {
+    const ticket = await this.getById(ticketId);
+    if (ticket && ticket.availableQuantity >= quantity) {
+      ticket.availableQuantity -= quantity;
+      return this.ticketRepository.save(ticket);
+    }
+    throw new Error('Not enough tickets available');
+  }
+
 }
