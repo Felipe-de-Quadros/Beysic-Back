@@ -22,7 +22,6 @@ async createUser(UserData: any) {
     }
     const hashedPw = await this.encryptPassword(UserData.password);
     const user = {name: UserData.name, email: UserData.email, password: hashedPw};
-    console.log(user)
   return this.UserRepository.create(user);
 }
 

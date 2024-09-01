@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { Ticket } from './models/Ticket';
 import { Order } from './models/Order';
 import { Payment } from './models/Payment';
@@ -18,11 +19,13 @@ import { UserService } from './services/UserService';
 import { UserRepository } from './repositories/UserRepository';
 import { AuthService } from './services/AuthService';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtService } from '@nestjs/jwt';
 import { LoginController } from './controllers/LoginController';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -35,7 +38,8 @@ import { LoginController } from './controllers/LoginController';
     }),
     TypeOrmModule.forFeature([Ticket, Order, Payment, User]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      global : true,
+      secret : process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
   ],
@@ -56,7 +60,6 @@ import { LoginController } from './controllers/LoginController';
     PaymentService,
     UserService,
     AuthService,
-    JwtService,
   ],
 })
 export class AppModule {}

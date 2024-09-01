@@ -13,9 +13,8 @@ export class AuthService {
   ) {
   }
 
-  async authenticate(login: string, password: string) {
+  async authenticate(login: string, password: string): Promise<{access_token: string}> {
     const user: User | null = await this.UserRepository.findOneByEmail({ where: { email: login } });
-
     if (!user) {
       throw new UnauthorizedException("Invalid Credentials");
     }
@@ -26,9 +25,8 @@ export class AuthService {
       throw new UnauthorizedException("Invalid Credentials");
     }
 
-    const payload = { sub: user.id, email: user.email };
-    const token = this.jwtService.sign(payload)
-
+    const payload = { sub: user.id, username: user.name };
+    const token = await this.jwtService.signAsync(payload)
     return {
       access_token: token,
     }
