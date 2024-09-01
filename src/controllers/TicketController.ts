@@ -40,9 +40,10 @@ export class TicketController {
     @Body() body : {
       userID:number,
       paymentMethod: string,
-      amount: number
+      amount: number,
+      quantity: number
     }){
-    const { userID, paymentMethod, amount} = body;
-    return this.paymentService.createPayment(ticketId, userID, paymentMethod, amount);
+    const { userID, paymentMethod, amount, quantity} = body;
+    return this.paymentService.createPayment(ticketId, userID, paymentMethod, amount, quantity);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories/UserRepository';
 import * as bcrypt from 'bcrypt';
 
@@ -16,8 +16,13 @@ getUserById(id: number) {
 }
 
 async createUser(UserData: any) {
+    const existingUser = await this.UserRepository.findOneByEmail({where : {email : UserData.email}});
+    if (existingUser) {
+      throw new ConflictException("User already exists");
+    }
     const hashedPw = await this.encryptPassword(UserData.password);
-    const user = {...UserData, password: hashedPw};
+    const user = {name: UserData.name, email: UserData.email, password: hashedPw};
+    console.log(user)
   return this.UserRepository.create(user);
 }
 

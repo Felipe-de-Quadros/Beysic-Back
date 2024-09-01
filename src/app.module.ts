@@ -16,6 +16,10 @@ import { PaymentController } from './controllers/PaymentController';
 import { UserController } from './controllers/UserController';
 import { UserService } from './services/UserService';
 import { UserRepository } from './repositories/UserRepository';
+import { AuthService } from './services/AuthService';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
+import { LoginController } from './controllers/LoginController';
 
 @Module({
   imports: [
@@ -30,12 +34,17 @@ import { UserRepository } from './repositories/UserRepository';
       synchronize: false,
     }),
     TypeOrmModule.forFeature([Ticket, Order, Payment, User]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [
     TicketController,
     OrderController,
     PaymentController,
-    UserController
+    UserController,
+    LoginController,
   ],
   providers: [
     TicketRepository,
@@ -45,7 +54,9 @@ import { UserRepository } from './repositories/UserRepository';
     TicketService,
     OrderService,
     PaymentService,
-    UserService
+    UserService,
+    AuthService,
+    JwtService,
   ],
 })
 export class AppModule {}

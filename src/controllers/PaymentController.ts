@@ -7,8 +7,8 @@ export class PaymentController {
 
   @Post()
   createPayment(@Body() paymentData : any){
-    const {orderID, userID, paymentMethod, amount} = paymentData;
-    return this.paymentService.createPayment(orderID, userID, paymentMethod, amount);
+    const {orderID, userID, paymentMethod, amount, quantity} = paymentData;
+    return this.paymentService.createPayment(orderID, userID, paymentMethod, amount, quantity);
   }
 
   @Get()

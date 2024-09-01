@@ -30,4 +30,8 @@ export class UserRepository {
   public delete(id: number) {
     return this.userRepository.delete(id);
   }
+
+  public async findOneByEmail(param: { where: { email: string } }): Promise<User | null> {
+    return this.userRepository.findOne(param);
+  }
 }
