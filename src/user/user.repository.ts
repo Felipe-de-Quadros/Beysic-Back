@@ -34,4 +34,8 @@ export class UserRepository {
   public async findOneByEmail(param: { where: { email: string } }): Promise<User | null> {
     return this.userRepository.findOne(param);
   }
+
+  async save(user: User) {
+    return this.userRepository.save(user)
+  }
 }
