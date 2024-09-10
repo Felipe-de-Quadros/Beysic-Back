@@ -28,4 +28,14 @@ ter instalado o mysql:
    npm run migration:run
    ```
 
-**Se der merda me chama no whats**
+## Criando uma nova MIGRATION
+
+   ```bash
+     npm run typeorm -- migration:generate src/migrations/<NOMEDACLASSE> -d src/data-source.ts
+   ```
+
+## RODANDO A BOSTA DA MIGRATION
+
+   ```bash
+     npm run typeorm -- migration:generate src/migrations/<NOMEDACLASSE> -d src/data-source.ts
+   ```
