@@ -1,26 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { Ticket } from './models/Ticket';
-import { Order } from './models/Order';
-import { Payment } from './models/Payment';
-import { User } from './models/User';
-import { TicketRepository } from './repositories/ticket/TicketRepository';
-import { OrderRepository } from './repositories/OrderRepository';
-import { PaymentRepository } from './repositories/PaymentRepository';
-import { TicketService } from './services/TicketService';
-import { OrderService } from './services/OrderService';
-import { PaymentService } from './services/PaymentService';
-import { TicketController } from './controllers/TicketController';
-import { OrderController } from './controllers/OrderController';
-import { PaymentController } from './controllers/PaymentController';
-import { UserController } from './controllers/UserController';
-import { UserService } from './services/UserService';
-import { UserRepository } from './repositories/UserRepository';
-import { AuthService } from './services/AuthService';
 import { JwtModule } from '@nestjs/jwt';
-import { LoginController } from './controllers/LoginController';
+import { AuthModule } from './auth/auth.module';
+import { OrderModule } from './order/order.module';
+import { PaymentModule } from './payment/payment.module';
+import { ShopCartModule } from './shop-cart/shop-cart.module';
+import { ShopCartItemModule } from './shop-cart-item/shop-cart-item.module';
+import { TicketModule } from './ticket/ticket.module';
+import { UserModule } from './user/user.module';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 @Module({
@@ -33,33 +23,21 @@ dotenv.config();
       username: process.env.DB_USER,
       password: process.env.DB_PW,
       database: process.env.DB_NAME,
-      entities: [Ticket, Order, Payment, User],
+      autoLoadEntities: true,
       synchronize: false,
     }),
-    TypeOrmModule.forFeature([Ticket, Order, Payment, User]),
     JwtModule.register({
-      global : true,
-      secret : process.env.JWT_SECRET,
+      global: true,
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1h' },
     }),
-  ],
-  controllers: [
-    TicketController,
-    OrderController,
-    PaymentController,
-    UserController,
-    LoginController,
-  ],
-  providers: [
-    TicketRepository,
-    OrderRepository,
-    PaymentRepository,
-    UserRepository,
-    TicketService,
-    OrderService,
-    PaymentService,
-    UserService,
-    AuthService,
+    AuthModule,
+    OrderModule,
+    PaymentModule,
+    ShopCartModule,
+    ShopCartItemModule,
+    TicketModule,
+    UserModule,
   ],
 })
 export class AppModule {}

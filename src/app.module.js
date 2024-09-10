@@ -1,4 +1,11 @@
 "use strict";
+import { ShopCartModule } from './shop-cart/shop-cart.module';
+import { UserModule } from './user/user.module';
+import { TicketModule } from './ticket/ticket.module';
+import { OrderModule } from './order/order.module';
+import { PaymentModule } from './payment/payment.module';
+import { ShopCartItemModule } from './shop-cart-item/shop-cart-item.module';
+import { AuthModule } from './auth/auth.module';
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
