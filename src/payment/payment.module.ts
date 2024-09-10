@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentService } from './payment.service';
 import { PaymentController } from './payment.controller';
@@ -16,9 +16,10 @@ import { ShopCartModule } from '../shop-cart/shop-cart.module';
     OrderModule,
     UserModule,
     ShopCartModule,
+    forwardRef(()=> TicketModule)
   ],
   providers: [PaymentService, PaymentRepository],
   controllers: [PaymentController],
-  exports: [PaymentRepository],
+  exports: [PaymentRepository, PaymentService],
 })
 export class PaymentModule {}
