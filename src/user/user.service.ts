@@ -1,6 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -15,13 +16,13 @@ export class UserService {
     return this.UserRepository.getById(id);
   }
 
-  async create(UserData: any) {
-    const existingUser = await this.UserRepository.findOneByEmail({where : {email : UserData.email}});
+  async create(createUserDto: CreateUserDto) {
+    const existingUser = await this.UserRepository.findOneByEmail({where : {email : createUserDto.email}});
     if (existingUser) {
-      throw new ConflictException("User already exists");
+      throw new ConflictException("User already exists!");
     }
-    const hashedPw = await this.encryptPassword(UserData.password);
-    const user = {name: UserData.name, email: UserData.email, password: hashedPw};
+    const hashedPw = await this.encryptPassword(createUserDto.password);
+    const user = {name: createUserDto.name, email: createUserDto.email, password: hashedPw};
     return this.UserRepository.create(user);
   }
 
