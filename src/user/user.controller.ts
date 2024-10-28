@@ -9,6 +9,8 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -31,6 +33,26 @@ export class UserController {
   @Get()
   findAll() {
     return this.userService.get();
+  }
+
+  // @UseGuards(JwtAuthGuard)
+  @Get('/profile')
+  @HttpCode(HttpStatus.OK)
+  async getProfile(@Req() req: any) {
+    const userId = req.user.id;
+    const user = await this.userService.getById(userId);
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isProducer: user.isProducer,
+      tickets: user.tickets,
+    };
   }
 
   @Get(':id')
