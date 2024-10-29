@@ -28,9 +28,9 @@ export class ShopCartRepository {
     });
   }
 
-  public create(cartData: Partial<ShopCart>) {
+  public async create(cartData: Partial<ShopCart>) {
     const newCart = this.shopCartRepository.create(cartData);
-    return this.shopCartRepository.save(newCart);
+    return await this.shopCartRepository.save(newCart);
   }
 
   public update(id: number, cartData: Partial<ShopCart>) {

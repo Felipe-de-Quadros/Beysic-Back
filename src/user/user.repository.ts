@@ -19,8 +19,7 @@ export class UserRepository {
   }
 
   public create(userData: Partial<User>) {
-    const newUser = this.userRepository.create(userData);
-    return this.userRepository.save(newUser);
+    return this.userRepository.create(userData);
   }
 
   public update(id: number, userData: Partial<User>) {

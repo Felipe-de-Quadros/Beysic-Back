@@ -13,6 +13,6 @@ import { PaymentModule } from '../payment/payment.module';
   ],
   controllers: [TicketController],
   providers: [TicketService, TicketRepository],
-  exports: [TicketRepository],
+  exports: [TicketService, TicketRepository],
 })
 export class TicketModule {}

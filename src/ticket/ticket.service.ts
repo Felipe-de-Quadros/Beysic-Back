@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TicketRepository } from './ticket.repository';
+import { CreateTicketDto } from './dto/create-ticket.dto';
 
 @Injectable()
 export class TicketService {
@@ -14,7 +15,7 @@ export class TicketService {
     return this.ticketRepository.getById(id);
   }
 
-  createTicket(ticketData: any) {
+  createTicket(ticketData: CreateTicketDto) {
     return this.ticketRepository.create(ticketData);
   }
 

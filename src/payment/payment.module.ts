@@ -12,10 +12,9 @@ import { ShopCartModule } from '../shop-cart/shop-cart.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Payment]),
-    TicketModule,
     OrderModule,
-    UserModule,
-    ShopCartModule,
+    forwardRef(()=> UserModule),
+    forwardRef(()=> ShopCartModule),
     forwardRef(()=> TicketModule)
   ],
   providers: [PaymentService, PaymentRepository],

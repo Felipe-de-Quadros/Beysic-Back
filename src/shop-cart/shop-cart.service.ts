@@ -4,6 +4,7 @@ import { ShopCartItem } from '../shop-cart-item/entities/shop-cart-item.entity';
 import { TicketRepository } from '../ticket/ticket.repository';
 import { ShopCartRepository } from './shop-cart.repository';
 import { ShopCartItemRepository } from '../shop-cart-item/shop-cart-item.repository';
+import { UserRepository } from '../user/user.repository';
 
 @Injectable()
 export class ShopCartService {
@@ -11,13 +12,29 @@ export class ShopCartService {
     private readonly shopCartRepository: ShopCartRepository,
     private readonly ticketRepository: TicketRepository,
     private readonly shopCartItemRepository: ShopCartItemRepository,
+    private readonly userRepository: UserRepository,
   ) {}
+
+  async createCartToUserId(userId: number): Promise<ShopCart> {
+    const user = await this.userRepository.getById(userId);
+    if (!user) {
+      throw new NotFoundException(`Usuário com ID ${userId} não encontrado`);
+    }
+    if (user.shopCart) {
+      return user.shopCart;
+    }
+    const newCart = await this.shopCartRepository.create({
+      user: user
+    });
+
+    return await this.shopCartRepository.save(newCart);
+  }
 
   async getCart(userId: number): Promise<ShopCart | null> {
     const result = await this.shopCartRepository.getById(userId);
 
     if (!result) {
-      return null;
+      await this.createCartToUserId(userId) ;
     }
 
     return result;

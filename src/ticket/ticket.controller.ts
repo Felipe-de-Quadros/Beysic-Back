@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { PaymentService } from '../payment/payment.service';
+import { CreateTicketDto } from './dto/create-ticket.dto';
 
 @Controller("ticket")
 export class TicketController {
@@ -19,7 +20,7 @@ export class TicketController {
   }
 
   @Post()
-  createTicket(@Body() ticketData: any) {
+  createTicket(@Body() ticketData: CreateTicketDto) {
     return this.ticketService.createTicket(ticketData);
   }
 
