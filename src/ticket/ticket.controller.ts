@@ -34,6 +34,15 @@ export class TicketController {
     return this.ticketService.deleteTicket(id);
   }
 
+  @Get()
+  getByParam(@Param('category') category: string) {
+    return this.ticketService.getTicketByCategory(category)
+  }
+
+  @Get()
+  getAllCategories() {
+    return this.ticketService.getAllCategories();
+  }
 
   @Post('buy/:ticketId')
   async buyTicket(

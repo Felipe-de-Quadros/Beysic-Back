@@ -18,6 +18,16 @@ export class TicketRepository {
     return this.ticketRepository.findOneBy({ id });
   }
 
+  public getByCategory(categories: string){
+    return this.ticketRepository.findOneBy({ categories });
+  }
+
+  public async getAllCategories() {
+    const tickets = await this.ticketRepository.find();
+    const allCategories = tickets.flatMap(ticket => ticket.categories);
+    return Array.from(new Set(allCategories));
+  }
+
   public create(ticketData: Partial<Ticket>) {
     const newTicket = this.ticketRepository.create(ticketData);
     return this.ticketRepository.save(newTicket);

@@ -26,4 +26,12 @@ export class TicketService {
   deleteTicket(id: number) {
     return this.ticketRepository.delete(id);
   }
+
+  getTicketByCategory(category: string) {
+    return this.ticketRepository.getByCategory(category);
+  }
+
+  getAllCategories(){
+    return this.ticketRepository.getAllCategories()
+  }
 }
