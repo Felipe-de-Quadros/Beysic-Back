@@ -9,8 +9,8 @@ export class Ticket {
   @Column({type: 'varchar', length: 255})
   eventName: string = '';
 
-  @Column({ type: 'simple-array' })
-  categories: string[] = [];
+  @Column({ type: 'varchar', length: 255 })
+  categories: string = '';
 
   @Column({type: 'varchar', length: 255})
   place: string = '';

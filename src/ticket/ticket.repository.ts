@@ -23,9 +23,13 @@ export class TicketRepository {
   }
 
   public async getAllCategories() {
-    const tickets = await this.ticketRepository.find();
-    const allCategories = tickets.flatMap(ticket => ticket.categories);
-    return Array.from(new Set(allCategories));
+    const tickets = await this.getAll();
+    let categories: string[] = []
+    tickets.forEach(ticket => {
+      categories = categories.concat(ticket.categories);
+
+    })
+    return Array.from(new Set(categories));
   }
 
   public create(ticketData: Partial<Ticket>) {

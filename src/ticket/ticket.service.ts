@@ -31,7 +31,7 @@ export class TicketService {
     return this.ticketRepository.getByCategory(category);
   }
 
-  getAllCategories(){
+  async getAllCategories(){
     return this.ticketRepository.getAllCategories()
   }
 }

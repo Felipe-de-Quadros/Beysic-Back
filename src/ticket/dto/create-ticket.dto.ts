@@ -5,9 +5,8 @@ export class CreateTicketDto {
   @Length(1, 255)
   eventName!: string;
 
-  @IsArray()
-  @IsString({ each: true })
-  categories!: string[];
+  @IsString()
+  categories!: string;
 
   @IsString()
   @Length(1, 255)
