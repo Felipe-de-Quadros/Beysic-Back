@@ -29,7 +29,11 @@ export class TicketRepository {
       categories = categories.concat(ticket.categories);
 
     })
-    return Array.from(new Set(categories));
+    const uniqueCategories = Array.from(new Set(categories))
+    return uniqueCategories.map((category, index) => ({
+      key:index,
+      name:category
+    }))
   }
 
   public create(ticketData: Partial<Ticket>) {
