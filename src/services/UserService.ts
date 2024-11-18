@@ -21,7 +21,7 @@ async createUser(UserData: any) {
       throw new ConflictException("User already exists");
     }
     const hashedPw = await this.encryptPassword(UserData.password);
-    const user = {name: UserData.name, email: UserData.email, password: hashedPw};
+    const user = {name: UserData.name, email: UserData.email, password: UserData.password};
   return this.UserRepository.create(user);
 }
 
