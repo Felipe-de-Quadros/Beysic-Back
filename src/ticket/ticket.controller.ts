@@ -44,6 +44,11 @@ export class TicketController {
     return this.ticketService.getTicketById(id);
   }
 
+  @Get('user/:userId')
+  getUserTickets(@Param('userId') userId: number) {
+    return this.ticketService.getUserTickets(userId);
+  }
+
   @Post()
   createTicket(@Body() ticketData: CreateTicketDto) {
     return this.ticketService.createTicket(ticketData);

@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { TicketRepository } from './ticket.repository';
 import { CreateTicketDto } from './dto/create-ticket.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserRepository } from '../user/user.repository';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class TicketService {
-  constructor(private readonly ticketRepository: TicketRepository) {
+  constructor(
+    private readonly ticketRepository: TicketRepository,
+    private readonly userRepository: UserRepository
+  ) {
   }
 
   getTickets() {
@@ -33,5 +39,27 @@ export class TicketService {
 
   async getAllCategories(){
     return this.ticketRepository.getAllCategories()
+  }
+
+  async getUserTickets(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ['tickets'],
+    });
+
+    if (!user || !user.tickets) {
+      throw new Error('Usuário ou tickets não encontrados');
+    }
+
+    return user.tickets.map(ticket => ({
+      id: ticket.id,
+      eventName: ticket.eventName,
+      categories: ticket.categories,
+      place: ticket.place,
+      city: ticket.city,
+      state: ticket.state,
+      price: ticket.price,
+      availableQuantity: ticket.availableQuantity,
+    }));
   }
 }

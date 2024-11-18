@@ -13,6 +13,6 @@ import { ShopCartModule } from '../shop-cart/shop-cart.module';
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository],
-  exports: [UserRepository],
+  exports: [UserRepository, UserService],
 })
 export class UserModule {}
