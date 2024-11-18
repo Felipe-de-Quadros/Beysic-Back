@@ -58,4 +58,12 @@ export class TicketRepository {
     throw new Error('Not enough tickets available');
   }
 
+  /**
+   * Método para salvar ou atualizar um Ticket.
+   * @param ticket Entidade Ticket a ser salva.
+   * @returns Retorna o ticket salvo.
+   */
+  public save(ticket: Ticket) {
+    return this.ticketRepository.save(ticket);
+  }
 }

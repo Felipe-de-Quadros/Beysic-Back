@@ -18,21 +18,21 @@ export class PaymentService {
     private readonly shopCartRepository: ShopCartRepository
   ) {}
 
-  async createPaymentFromCart(userID: number, paymentMethod: string): Promise<Payment[]> {
+  async createPaymentFromCart(userID: number, paymentMethod: string): Promise<{success: boolean; message: string; payments?: Payment[]}> {
     const user = await this.userRepository.getById(userID);
-    const cart = await this.shopCartRepository.getByUserId(userID);
 
     if (user == null){
       throw new Error('Nao foi possivel encontrar o usuario');
     }
 
+    const cart = await this.shopCartRepository.getByUserId(userID);
     if (!cart || !cart.items || cart.items.length === 0) {
       throw new Error('Carrinho vazio ou não encontrado!');
     }
 
     for (const item of cart.items) {
       const ticket = item.ticket;
-      if (ticket == null) {
+      if (!ticket) {
         throw new Error('Ticket nao encontrado!');
       }
       if (ticket.availableQuantity < item.quantity) {
@@ -80,7 +80,11 @@ export class PaymentService {
           user.tickets = [];
         }
         for (let i = 0; i < item.quantity; i++) {
-          user.tickets.push(ticket);
+          const userTicket = await this.ticketRepository.getById(ticket.id);
+          if (userTicket) {
+            userTicket.user = user;
+            await this.ticketRepository.save(userTicket);
+          }
         }
 
         payments.push(newPayment);
@@ -95,12 +99,16 @@ export class PaymentService {
     await this.shopCartRepository.save(cart);
     await this.userRepository.save(user);
 
-    return payments;
+    return {
+      success: true,
+      message: "Payment processed successfully",
+      payments
+    };
   }
 
 
   private processPayment(payment: Payment) {
-    return Math.random() > 0.2;
+    return true;
   }
 
   public async getPaymentStatus(paymentID: number) {

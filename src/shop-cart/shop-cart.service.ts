@@ -5,6 +5,7 @@ import { TicketRepository } from '../ticket/ticket.repository';
 import { ShopCartRepository } from './shop-cart.repository';
 import { ShopCartItemRepository } from '../shop-cart-item/shop-cart-item.repository';
 import { UserRepository } from '../user/user.repository';
+import { SanitizedShopCartDto } from './dto/sanitazed-shop-cart.dto';
 
 @Injectable()
 export class ShopCartService {
@@ -41,7 +42,7 @@ export class ShopCartService {
   }
 
 
-  async addToCart(userId: number, ticketId: number, quantity: number): Promise<ShopCart> {
+  async addToCart(userId: number, ticketId: number, quantity: number): Promise<SanitizedShopCartDto> {
     const cart = await this.getCart(userId);
     const ticket = await this.ticketRepository.getById(ticketId);
 
@@ -63,9 +64,12 @@ export class ShopCartService {
       newItem.ticket = ticket;
       newItem.quantity = quantity;
       await this.shopCartItemRepository.create(newItem);
+      cart.items.push(newItem)
     }
 
-    return this.shopCartRepository.save(cart);
+    const savedCart = await this.shopCartRepository.save(cart);
+    
+    return this.sanitizeCart(savedCart);
   }
 
 
@@ -90,5 +94,22 @@ export class ShopCartService {
 
     cart.items = [];
     return this.shopCartRepository.save(cart);
+  }
+
+  private sanitizeCart(cart: ShopCart): SanitizedShopCartDto {
+    return {
+      id: cart.id,
+      userId: cart.user!.id,
+      items: cart.items!.map(item => ({
+        id: item.id,
+        ticket: {
+          id: item.ticket!.id,
+          eventName: item.ticket!.eventName,
+          price: item.ticket!.price,
+          availableQuantity: item.ticket!.availableQuantity,
+        },
+        quantity: item.quantity,
+      })),
+    };
   }
 }
